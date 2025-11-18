@@ -1,6 +1,8 @@
 const fs = require("fs");
 const mqtt = require("mqtt");
 require("dotenv").config();
+const kubitdb = require("kubitdb");
+const db = new kubitdb("./utils/db");
 
 const deviceID = process.env.DEVICE_ID;
 
@@ -22,21 +24,9 @@ client.on("connect", () => {
     const reportTopic = `device/${deviceID}/report`;
     const requestTopic = `device/${deviceID}/request`;
 
-    client.subscribe(reportTopic, (err) => {
-        if(err) console.error("❌ Subscribe hatası:", err.message);
+    //if(db.get(""))
 
-        const commands = [
-            { "print": { "sequence_id": "2008", "command": "resume" } },
-        ];
-        commands.forEach((msg, i) => {
-            setTimeout(() => {
-                console.log(`📤 ${i + 1}. Komut ->`, JSON.stringify(msg));
-                client.publish(requestTopic, JSON.stringify(msg), { qos: 1 });
-            }, i * 500);
-        });
-
-
-    });
+ 
 });
 
 client.on("error", (err) => {
